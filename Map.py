@@ -20,6 +20,12 @@ class Map:
         return (i * cls.SIZE, j * cls.SIZE)
 
     @classmethod
+    def to_map(cls, x, y):
+        i = x // cls.SIZE
+        j = y // cls.SIZE
+        return (i, j)
+
+    @classmethod
     def draw_chip(cls, i, j, asset_id):
         """map座標(i, j)にasset_idのマップチップを描画
         """
