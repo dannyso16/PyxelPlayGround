@@ -61,6 +61,9 @@ class Map:
         # Sets a value at a specified position.
         self.map[j][i] = asset_id
 
+    def get_asset_id(self, i, j) -> int:
+        return self.map[j][i]
+
     # Find a specific chip on the map
     def search_map(self, val):
         # Returns the coordinates where the given value exists.

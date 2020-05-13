@@ -21,6 +21,7 @@ class Player:
     def draw(self):
         asset_id = self._get_asset_id()
         Chip.draw_asset(self.x, self.y, asset_id)
+        self.act_with_key()
 
     def _change_direction(self, direction: str):
         assert direction in self._DIRECTIONS, "方角はNEWSのいずれかにしてください"
@@ -39,6 +40,46 @@ class Player:
             if self.map.is_wall(i, j):
                 return False
         return True
+
+    def _get_forward_map_pos(self) -> tuple:
+        """前方のmap座標を取得
+        """
+        cx, cy = Chip.get_center(self.x, self.y)
+        h = Chip.IMG_HEIGHT
+        w = Chip.IMGBANK_WIDTH
+        if self.direction == "N":
+            cy -= h
+        elif self.direction == "E":
+            cx += w
+        elif self.direction == "W":
+            cx -= w
+        else:
+            cy += h
+
+        (i, j) = Map.to_map(cx, cy)
+        return (i, j)
+
+    def _check_forward(self) -> int:
+        """前方を調べ、何があるかを返す
+        """
+        (i, j) = self._get_forward_map_pos()
+        return self.map.get_asset_id(i, j)
+
+    def act_with_key(self):
+        """調べたりする
+        """
+        # 押下時のみ反応させる
+        if pyxel.btn(pyxel.KEY_SPACE):
+            asset_id = self._check_forward()
+            # 敵
+            if Chip.is_enemy(asset_id):
+                pyxel.text(self.x, self.y, "enemy", 0)
+            # アイテム
+            if Chip.is_item(asset_id):
+                pyxel.text(self.x, self.y, "item", 0)
+                # 何かする
+                (i, j) = self._get_forward_map_pos()
+                self.map.set_map(i, j, 10)
 
     def move_with_key(self):
         nx = self.x
