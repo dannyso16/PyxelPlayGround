@@ -48,10 +48,31 @@ class Chip:
         pyxel.blt(x, y, 0, u, v, cls.IMG_WIDTH, cls.IMG_HEIGHT, 7)
 
     @classmethod
+    def get_center(cls, x: int, y: int) -> tuple:
+        cx = x + cls.IMG_WIDTH//2
+        cy = y + cls.IMG_HEIGHT//2
+        return (cx, cy)
+
+    @classmethod
     def is_wall(cls, asset_id):
         no_collidables = [10, 11, 12]  # 背景
         # 背景はfalse, それ以外はtrue
         return asset_id not in no_collidables
+
+    @classmethod
+    def is_pc(cls, asset_id):
+        pc = [0, 1, 2, 3]
+        return asset_id in pc
+
+    @classmethod
+    def is_enemy(cls, asset_id):
+        npc = [4, 5, 6]
+        return asset_id in npc
+
+    @classmethod
+    def is_item(cls, asset_id):
+        item = [7, 8, 9]
+        return asset_id in item
 
 
 # 以下テスト用
