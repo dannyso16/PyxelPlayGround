@@ -1,6 +1,7 @@
 import pyxel
 from Map import Map
 from Chip import Chip
+from Dialog import Dialog
 
 
 class Player:
@@ -73,13 +74,16 @@ class Player:
             asset_id = self._check_forward()
             # 敵
             if Chip.is_enemy(asset_id):
-                pyxel.text(self.x, self.y, "enemy", 0)
+                Dialog.draw("Enemy")
             # アイテム
-            if Chip.is_item(asset_id):
-                pyxel.text(self.x, self.y, "item", 0)
+            elif Chip.is_item(asset_id):
+                Dialog.draw("Item")
                 # 何かする
-                (i, j) = self._get_forward_map_pos()
-                self.map.set_map(i, j, 10)
+                # (i, j) = self._get_forward_map_pos()
+                # self.map.set_map(i, j, 10)
+            # カベ
+            elif Chip.is_wall(asset_id):
+                Dialog.draw("Wall")
 
     def move_with_key(self):
         nx = self.x
