@@ -52,7 +52,7 @@ class Player:
         elif self.direction == "E":
             cx += w
         elif self.direction == "W":
-            cx -= w
+            cx -= w+1  # TODO: 統一的に書いてほしい
         else:
             cy += h
 
