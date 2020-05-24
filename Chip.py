@@ -36,15 +36,19 @@ class Chip:
     IMG_HEIGHT = 8
 
     @classmethod
-    def draw_asset(cls, x: int, y: int, asset_id: int):
+    def draw_asset(cls, x: int, y: int, asset_id: int, background_id: int = 10):
         """ asset_id の画像を(x, y)に描画
         """
         assert 0 <= asset_id <= 15, "asset_id は0～15で指定"
+        # asset はすべて白色(7)で透過
+        # 背景を描画
+        u = (background_id % cls.IMGBANK_WIDTH) * cls.IMG_WIDTH
+        v = (background_id // cls.IMGBANK_WIDTH) * cls.IMG_HEIGHT
+        pyxel.blt(x, y, 0, u, v, cls.IMG_WIDTH, cls.IMG_HEIGHT, 7)
 
+        # assetを描画
         u = (asset_id % cls.IMGBANK_WIDTH) * cls.IMG_WIDTH
         v = (asset_id // cls.IMGBANK_WIDTH) * cls.IMG_HEIGHT
-
-        # asset はすべて白色(7)で透過
         pyxel.blt(x, y, 0, u, v, cls.IMG_WIDTH, cls.IMG_HEIGHT, 7)
 
     @classmethod
