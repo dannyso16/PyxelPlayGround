@@ -2,6 +2,7 @@ import pyxel
 from Enemy import Enemy
 from Player import Player
 from Bullet import Bullet
+from Particle import Particle
 import time
 
 
@@ -19,6 +20,7 @@ class App:
         self.enemy = Enemy(sx=100, sy=0, height=10,
                            width=10, speed=0.5, max_hp=10, move_function_name="sin")
         self.enemy.activate()
+        self.particles = []
         pyxel.run(self.update, self.draw)
 
     def update(self):
@@ -40,7 +42,10 @@ class App:
             ew = self.enemy.width
             eh = self.enemy.height
             if (ex - r < cx < ex + ew + r) and (ey - r < cy < ey + eh + r):
-                self.enemy.receive_damage()
+                self.enemy.current_hp -= 1
+                if self.enemy.current_hp == 0:
+                    self.enemy.deactivate()
+                    self.particles.append(Particle(ex, ey))
 
         # enemy bullet とplayerとの当たり判定
         eb: Bullet
@@ -54,6 +59,7 @@ class App:
             ph = self.enemy.height
             if (px - r < cx < px + pw + r) and (py - r < cy < py + ph + r):
                 self.player.deactivate()
+                self.particles.append(Particle(px, py))
 
     def draw(self):
         pyxel.cls(0)
@@ -61,8 +67,16 @@ class App:
         self.enemy.draw()
         self.show_debug_info()
 
+        p: Particle
+        for p in self.particles:
+            p.draw()
+            if not p.is_active:
+                self.particles.remove(p)
+                del p
+
     def show_debug_info(self):
         info = f"FPS: {self.fps:.2f}\n"
+        info += f"Particles: {len(self.particles)}\n"
         pyxel.text(0, pyxel.height - 30, info, 9)
 
 
