@@ -39,6 +39,8 @@ class Enemy:
     def draw(self):
         if not self.is_active:
             return
+        hp_info = f"{self.current_hp}/{self.max_hp}"
+        pyxel.text(self.x, self.y - 6, hp_info, 9)
         pyxel.rectb(self.x, self.y, self.width, self.height, 8)
 
         for b in self.bullets:
