@@ -3,10 +3,14 @@ from Bullet import Bullet
 
 
 class Player:
-    def __init__(self, sx: int, sy: int, speed: int):
+    def __init__(self, sx: int, sy: int, height: int, width: int, speed: int):
         self.x = sx
         self.y = sy
-        self.radius_for_collision = 4
+
+        # size
+        self.width = width
+        self.height = height
+
         self.speed = speed
         self.is_active = True
         self.bullets = []
@@ -24,7 +28,7 @@ class Player:
     def draw(self):
         if not self.is_active:
             return
-        pyxel.circb(self.x, self.y, 4, 7)
+        pyxel.rectb(x=self.x, y=self.y, w=self.width, h=self.height, col=7)
 
         for b in self.bullets:
             b.draw()
@@ -74,7 +78,7 @@ class Player:
 if __name__ == "__main__":
 
     pyxel.init(200, 200)
-    player = Player(100, 100, 2)
+    player = Player(100, 100, 10, 10, 2)
     player.activate()
 
     def update():

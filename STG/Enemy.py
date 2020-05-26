@@ -19,7 +19,7 @@ class Enemy:
         # size
         self.width = width
         self.height = height
-        self.radius_for_collision = min(width, height) / 2
+        # self.radius_for_collision = min(width, height) / 2
 
         self.speed = speed
         self.max_hp = max_hp
