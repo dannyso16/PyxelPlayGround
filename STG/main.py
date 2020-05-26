@@ -1,6 +1,7 @@
 import pyxel
 from Enemy import Enemy
 from Player import Player
+from Bullet import Bullet
 import time
 
 
@@ -12,7 +13,7 @@ class App:
 
         pyxel.init(width=200, height=200, caption="STG",
                    scale=2, fps=30)
-        self.player = Player(sx=100, sy=150, speed=2)
+        self.player = Player(sx=100, sy=150, width=10, height=10, speed=2)
         self.player.activate()
 
         self.enemy = Enemy(sx=100, sy=0, height=10,
@@ -27,6 +28,32 @@ class App:
         cur_time = time.time()
         self.fps = 1 / (cur_time - self._time)
         self._time = cur_time
+
+        # player bullet と敵との当たり判定
+        pb: Bullet
+        for pb in self.player.bullets:
+            r = pb.radius_for_collision
+            cx = pb.x
+            cy = pb.y
+            ex = self.enemy.x
+            ey = self.enemy.y
+            ew = self.enemy.width
+            eh = self.enemy.height
+            if (ex - r < cx < ex + ew + r) and (ey - r < cy < ey + eh + r):
+                self.enemy.deactivate()
+
+        # enemy bullet とplayerとの当たり判定
+        eb: Bullet
+        for eb in self.enemy.bullets:
+            r = eb.radius_for_collision
+            cx = eb.x
+            cy = eb.y
+            px = self.player.x
+            py = self.player.y
+            pw = self.enemy.width
+            ph = self.enemy.height
+            if (px - r < cx < px + pw + r) and (py - r < cy < py + ph + r):
+                self.player.deactivate()
 
     def draw(self):
         pyxel.cls(0)
