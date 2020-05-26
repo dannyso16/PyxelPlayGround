@@ -12,12 +12,12 @@ class App:
         self.fps = 30
 
         pyxel.init(width=200, height=200, caption="STG",
-                   scale=2, fps=30)
+                   scale=3, fps=30)
         self.player = Player(sx=100, sy=150, width=10, height=10, speed=2)
         self.player.activate()
 
         self.enemy = Enemy(sx=100, sy=0, height=10,
-                           width=10, speed=0.5, max_hp=5, move_function_name="sin")
+                           width=10, speed=0.5, max_hp=10, move_function_name="sin")
         self.enemy.activate()
         pyxel.run(self.update, self.draw)
 
@@ -40,7 +40,7 @@ class App:
             ew = self.enemy.width
             eh = self.enemy.height
             if (ex - r < cx < ex + ew + r) and (ey - r < cy < ey + eh + r):
-                self.enemy.deactivate()
+                self.enemy.receive_damage()
 
         # enemy bullet とplayerとの当たり判定
         eb: Bullet

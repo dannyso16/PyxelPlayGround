@@ -19,7 +19,6 @@ class Enemy:
         # size
         self.width = width
         self.height = height
-        # self.radius_for_collision = min(width, height) / 2
 
         self.speed = speed
         self.max_hp = max_hp
@@ -56,6 +55,12 @@ class Enemy:
             b = Bullet(sx=self.x, sy=self.y, radius=2,
                        speed=3, color=8, move_function_name='linear')
             self.bullets.append(b)
+
+    def receive_damage(self):
+        if self.current_hp == 0:
+            self.deactivate()
+        else:
+            self.current_hp -= 1
 
     def activate(self):
         self.is_active = True
