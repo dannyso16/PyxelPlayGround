@@ -65,8 +65,8 @@ class Enemy:
 
     def show_debug_info(self):
         info = f"len(bullets): {len(self.bullets)}\n"
-        info += f"x={self.x}, y={self.y}\n"
-        pyxel.text(pyxel.width-50, 0, info, 9)
+        info += f"x={self.x:.2f}, y={self.y:.2f}\n"
+        pyxel.text(pyxel.width-80, 0, info, 9)
 
 
 # test

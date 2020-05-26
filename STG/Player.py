@@ -66,7 +66,7 @@ class Player:
 
     def show_debug_info(self):
         info = f"len(bullets): {len(self.bullets)}\n"
-        info += f"x={self.x}, y={self.y}\n"
+        info += f"x={self.x:.2f}, y={self.y:.2f}\n"
         pyxel.text(0, 0, info, 9)
 
 
