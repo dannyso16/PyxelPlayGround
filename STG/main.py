@@ -1,11 +1,17 @@
 import pyxel
 from Enemy import Enemy
 from Player import Player
+import time
 
 
 class App:
     def __init__(self):
-        pyxel.init(200, 200)
+        # to calcurate frame per second
+        self._time = time.time()
+        self.fps = 30
+
+        pyxel.init(width=200, height=200, caption="STG",
+                   scale=2, fps=30)
         self.player = Player(sx=100, sy=150, speed=2)
         self.player.activate()
 
@@ -18,10 +24,19 @@ class App:
         self.player.update()
         self.enemy.update()
 
+        cur_time = time.time()
+        self.fps = 1 / (cur_time - self._time)
+        self._time = cur_time
+
     def draw(self):
         pyxel.cls(0)
         self.player.draw()
         self.enemy.draw()
+        self.show_debug_info()
+
+    def show_debug_info(self):
+        info = f"FPS: {self.fps:.2f}\n"
+        pyxel.text(0, pyxel.height - 30, info, 9)
 
 
 if __name__ == "__main__":
