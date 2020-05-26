@@ -8,7 +8,7 @@ class Map:
     CHIP_HEIGHT = Chip.IMG_HEIGHT  # 4 map chips in a column
 
     def __init__(self):
-        self.map = self.load_map("map.txt")
+        self.map = self.load_map("RPG_map_mini.txt")
         self.MAP_WIDTH = len(self.map[0])
         self.MAP_HEIGHT = len(self.map)
         # print(self.MAP_WIDTH, self.MAP_HEIGHT)

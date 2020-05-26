@@ -122,6 +122,6 @@ if __name__ == "__main__":
 
     pyxel.init(_map.MAP_WIDTH*Chip.IMG_WIDTH,
                _map.MAP_HEIGHT*Chip.IMG_HEIGHT)
-    pyxel.load("asset.pyxres")
+    pyxel.load("../asset.pyxres")
     pc = Player(_map)
     pyxel.run(update, draw)
