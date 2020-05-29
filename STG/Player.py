@@ -3,7 +3,10 @@ from Bullet import Bullet
 
 
 class Player:
-    def __init__(self, sx: int, sy: int, height: int, width: int, speed: int):
+    def __init__(self, sx: int, sy: int, height: int, width: int, speed: int,
+                 debug_mode=False):
+        self.debug_mode = debug_mode
+
         self.x = sx
         self.y = sy
 
@@ -69,6 +72,8 @@ class Player:
         self.is_active = False
 
     def show_debug_info(self):
+        if not self.debug_mode:
+            return
         info = f"len(bullets): {len(self.bullets)}\n"
         info += f"x={self.x:.2f}, y={self.y:.2f}\n"
         pyxel.text(0, 0, info, 9)

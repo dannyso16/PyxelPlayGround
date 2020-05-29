@@ -7,7 +7,9 @@ from math import sin
 class Enemy:
 
     def __init__(self, sx: int, sy: int, height: int, width: int, speed: int,
-                 max_hp: int, idx: int):
+                 max_hp: int, idx: int, debug_mode=False):
+        self.debug_mode = debug_mode
+
         # position
         self.x = sx
         self.y = sy
@@ -68,6 +70,8 @@ class Enemy:
         self.is_active = False
 
     def show_debug_info(self):
+        if not self.debug_mode:
+            return
         info = f"len(bullets): {len(self.bullets)}\n"
         info += f"x={self.x:.2f}, y={self.y:.2f}\n"
         pyxel.text(pyxel.width-80, 0, info, 9)

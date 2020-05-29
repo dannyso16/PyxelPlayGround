@@ -8,7 +8,9 @@ import time
 
 
 class App:
-    def __init__(self):
+    def __init__(self, debug_mode=False):
+        self.debug_mode = debug_mode
+
         # to calcurate frame per second
         self._time = time.time()
         self.fps = 30
@@ -17,12 +19,14 @@ class App:
                    scale=3, fps=30)
         pyxel.load("../asset.pyxres")
 
-        self.player = Player(sx=100, sy=150, width=10, height=10, speed=2)
+        self.player = Player(sx=100, sy=150, width=10, height=10, speed=2,
+                             debug_mode=self.debug_mode)
         self.player.activate()
         self.enemies = []
         for i in range(20):
             e = Enemy(sx=100, sy=0, height=10,
-                      width=10, speed=0.5, max_hp=10, idx=i)
+                      width=10, speed=0.5, max_hp=10, idx=i,
+                      debug_mode=self.debug_mode)
             e.activate()
             self.enemies.append(e)
 
@@ -91,6 +95,8 @@ class App:
                 del p
 
     def show_debug_info(self):
+        if not self.debug_mode:
+            return
         info = f"FPS: {self.fps:.2f}\n"
         info += f"Particles: {len(self.particles)}\n"
         pyxel.text(0, pyxel.height - 30, info, 9)
