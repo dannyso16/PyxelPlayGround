@@ -19,10 +19,13 @@ class App:
 
         self.player = Player(sx=100, sy=150, width=10, height=10, speed=2)
         self.player.activate()
+        self.enemies = []
+        for i in range(20):
+            e = Enemy(sx=100, sy=0, height=10,
+                      width=10, speed=0.5, max_hp=10, idx=i)
+            e.activate()
+            self.enemies.append(e)
 
-        self.enemy = Enemy(sx=100, sy=0, height=10,
-                           width=10, speed=0.5, max_hp=10, move_function_name="sin")
-        self.enemy.activate()
         self.particles = []
 
         self.back_ground = BackGround()
@@ -31,7 +34,8 @@ class App:
     def update(self):
         self.back_ground.update()
         self.player.update()
-        self.enemy.update()
+        for e in self.enemies:
+            e.update()
 
         cur_time = time.time()
         self.fps = 1 / (cur_time - self._time)
@@ -43,34 +47,40 @@ class App:
             r = pb.radius_for_collision
             cx = pb.x
             cy = pb.y
-            ex = self.enemy.x
-            ey = self.enemy.y
-            ew = self.enemy.width
-            eh = self.enemy.height
-            if (ex - r < cx < ex + ew + r) and (ey - r < cy < ey + eh + r):
-                self.enemy.current_hp -= 1
-                if self.enemy.current_hp == 0:
-                    self.enemy.deactivate()
-                    self.particles.append(Particle(ex, ey))
+            for enemy in self.enemies:
+                ex = enemy.x
+                ey = enemy.y
+                ew = enemy.width
+                eh = enemy.height
+                if (ex - r < cx < ex + ew + r) and (ey - r < cy < ey + eh + r):
+                    enemy.current_hp -= 1
+                    if enemy.current_hp == 0:
+                        self.enemies.remove(enemy)
+                        enemy.deactivate()
+                        self.particles.append(Particle(ex, ey))
 
         # enemy bullet とplayerとの当たり判定
+        if not self.player.is_active:
+            return
         eb: Bullet
-        for eb in self.enemy.bullets:
-            r = eb.radius_for_collision
-            cx = eb.x
-            cy = eb.y
-            px = self.player.x
-            py = self.player.y
-            pw = self.enemy.width
-            ph = self.enemy.height
-            if (px - r < cx < px + pw + r) and (py - r < cy < py + ph + r):
-                self.player.deactivate()
-                self.particles.append(Particle(px, py))
+        for enemy in self.enemies:
+            for eb in enemy.bullets:
+                r = eb.radius_for_collision
+                cx = eb.x
+                cy = eb.y
+                px = self.player.x
+                py = self.player.y
+                pw = enemy.width
+                ph = enemy.height
+                if (px - r < cx < px + pw + r) and (py - r < cy < py + ph + r):
+                    self.player.deactivate()
+                    self.particles.append(Particle(px, py))
 
     def draw(self):
         self.back_ground.draw()
         self.player.draw()
-        self.enemy.draw()
+        for e in self.enemies:
+            e.draw()
         self.show_debug_info()
 
         p: Particle
