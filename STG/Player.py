@@ -58,8 +58,8 @@ class Player:
         return within_window
 
     def shot(self):
-        b = Bullet(sx=self.x, sy=self.y, radius=4,
-                   speed=-3, color=5, move_function_name='linear')
+        b = Bullet(sx=self.x, sy=self.y, radius=2,
+                   speed=-3, color=9, move_function_name='linear')
         self.bullets.append(b)
 
     def activate(self):

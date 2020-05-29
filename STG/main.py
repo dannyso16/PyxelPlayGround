@@ -3,6 +3,7 @@ from Enemy import Enemy
 from Player import Player
 from Bullet import Bullet
 from Particle import Particle
+from BackGround import BackGround
 import time
 
 
@@ -12,8 +13,10 @@ class App:
         self._time = time.time()
         self.fps = 30
 
-        pyxel.init(width=200, height=200, caption="STG",
+        pyxel.init(width=250, height=200, caption="STG",
                    scale=3, fps=30)
+        pyxel.load("../asset.pyxres")
+
         self.player = Player(sx=100, sy=150, width=10, height=10, speed=2)
         self.player.activate()
 
@@ -21,9 +24,12 @@ class App:
                            width=10, speed=0.5, max_hp=10, move_function_name="sin")
         self.enemy.activate()
         self.particles = []
+
+        self.back_ground = BackGround()
         pyxel.run(self.update, self.draw)
 
     def update(self):
+        self.back_ground.update()
         self.player.update()
         self.enemy.update()
 
@@ -62,7 +68,7 @@ class App:
                 self.particles.append(Particle(px, py))
 
     def draw(self):
-        pyxel.cls(0)
+        self.back_ground.draw()
         self.player.draw()
         self.enemy.draw()
         self.show_debug_info()
