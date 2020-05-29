@@ -1,15 +1,13 @@
 import pyxel
 from Bullet import Bullet
+from Functions import Functions
 from math import sin
 
 
 class Enemy:
-    # TODO: 係数を変えられるようにする
-    FUNCTION_LIST = {"linear": lambda x: 0,
-                     "sin": lambda x: 40*sin(x/20)}
 
     def __init__(self, sx: int, sy: int, height: int, width: int, speed: int,
-                 max_hp: int, move_function_name: str):
+                 max_hp: int, idx: int):
         # position
         self.x = sx
         self.y = sy
@@ -20,12 +18,12 @@ class Enemy:
         self.width = width
         self.height = height
 
+        self.idx = idx
         self.speed = speed
         self.max_hp = max_hp
         self.current_hp = max_hp
         self.is_active = True
         self.bullets = []
-        self.move_function = Enemy.FUNCTION_LIST[move_function_name]
 
     def update(self):
         if not self.is_active:
@@ -49,8 +47,13 @@ class Enemy:
         self.show_debug_info()
 
     def move(self):
-        self.y += self.speed
-        self.x = self.sx + self.move_function(self.y)
+        def get_invader(frame_count):
+            return Functions.get_invader(self.idx, 10, 10, frame_count)
+
+        f = pyxel.frame_count // (30 / self.speed)
+        x, y = get_invader(f)
+        self.y = y
+        self.x = x
 
     def shot(self):
         if pyxel.frame_count % 40 == 0:
@@ -75,7 +78,7 @@ if __name__ == "__main__":
 
     pyxel.init(200, 200)
     enemy = Enemy(sx=100, sy=0, height=10, width=10, speed=0.5, max_hp=5,
-                  move_function_name="sin")
+                  idx=0)
     enemy.activate()
 
     def update():
