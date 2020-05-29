@@ -31,7 +31,8 @@ class Player:
     def draw(self):
         if not self.is_active:
             return
-        pyxel.rectb(x=self.x, y=self.y, w=self.width, h=self.height, col=7)
+        # pyxel.rectb(x=self.x, y=self.y, w=self.width, h=self.height, col=7)
+        pyxel.blt(self.x, self.y, 0, 0, 0, 8, 8, 7)
 
         for b in self.bullets:
             b.draw()
@@ -83,6 +84,7 @@ class Player:
 if __name__ == "__main__":
 
     pyxel.init(200, 200)
+    pyxel.load("../asset.pyxres")
     player = Player(100, 100, 10, 10, 2)
     player.activate()
 

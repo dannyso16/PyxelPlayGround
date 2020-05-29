@@ -41,7 +41,9 @@ class Enemy:
             return
         hp_info = f"{self.current_hp}/{self.max_hp}"
         pyxel.text(self.x, self.y - 6, hp_info, 9)
-        pyxel.rectb(self.x, self.y, self.width, self.height, 8)
+        # pyxel.rectb(self.x, self.y, self.width, self.height, 8)
+        i = self.idx % 3
+        pyxel.blt(self.x, self.y, 0, 8*i, 8, 8, 8, 7)
 
         for b in self.bullets:
             b.draw()
@@ -81,6 +83,7 @@ class Enemy:
 if __name__ == "__main__":
 
     pyxel.init(200, 200)
+    pyxel.load("../asset.pyxres")
     enemy = Enemy(sx=100, sy=0, height=10, width=10, speed=0.5, max_hp=5,
                   idx=0)
     enemy.activate()
