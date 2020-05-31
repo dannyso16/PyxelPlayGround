@@ -25,13 +25,21 @@ class Scene:
             m.update()
 
     def draw(self):
+        pyxel.cls(1)
         m: Message
         for m in self.messages:
             m.draw()
 
+    def click_mouse(self):
+        m: Message
+        for m in self.messages:
+            if m.on_the_mouse:
+                m.toggle_state()
+
 
 if __name__ == "__main__":
     pyxel.init(200, 200)
+    pyxel.mouse(visible=True)
     messages = []
     for i in range(3):
         m = Message(x=10+60*i, y=80, h=70, w=50, scene_name="test",
