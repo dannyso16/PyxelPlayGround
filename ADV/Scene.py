@@ -19,6 +19,7 @@ class Scene:
         m: Message
         for m in self.messages:
             self.flags[m.flag_name] = False
+            m.debug_mode = self.debug_mode
         self.state = State.SEARCH
 
     def update(self):

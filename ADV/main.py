@@ -13,7 +13,7 @@ class App:
 
         messages = self.get_messages()
 
-        self.scene = Scene(messages)
+        self.scene = Scene(messages, debug_mode=self.debug_mode)
 
         pyxel.run(self.update, self.draw)
 
@@ -92,4 +92,4 @@ class App:
 
 
 if __name__ == "__main__":
-    App()
+    App(debug_mode=False)
