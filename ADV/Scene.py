@@ -27,7 +27,6 @@ class Scene:
             m.update()
 
     def draw(self):
-        pyxel.cls(1)
         if self.debug_mode:
             self.show_debug_info()
 

@@ -10,18 +10,7 @@ class App:
 
         self.debug_mode = debug_mode
 
-        messages = []
-        m = Message(x=10, y=80, h=70, w=50, scene_name="test",
-                    flag_name=f"flag{0}",
-                    precondition_name=None,
-                    text=f"text_No.{0}")
-        messages.append(m)
-        for i in range(1, 3):
-            m = Message(x=10+60*i, y=80, h=70, w=50, scene_name="test",
-                        flag_name=f"flag{i}",
-                        precondition_name=f"flag{i-1}",
-                        text=f"text_No.{i}")
-            messages.append(m)
+        messages = self.get_messages()
 
         self.scene = Scene(messages)
 
@@ -34,9 +23,40 @@ class App:
             self.scene.click_mouse()
 
     def draw(self):
-        pyxel.cls(0)
+        self.draw_back_ground()
         self.scene.draw()
         self.debug_info()
+
+    def draw_back_ground(self):
+        pyxel.cls(15)
+        h = pyxel.height/5
+        pyxel.rect(0, 4*h, pyxel.width, h, 4)
+
+    def get_messages(self):
+        messages = []
+        m = Message(x=30, y=120, h=40, w=48, scene_name="room1",
+                    flag_name=f"chest",
+                    precondition_name=None,
+                    text=f"You open the chest.\nNothing in it.")
+        messages.append(m)
+
+        m = Message(x=40, y=112, h=8, w=8, scene_name="room1",
+                    flag_name=f"portion",
+                    precondition_name=None,
+                    text=f"This is a portion.\nIt smells bad...")
+        messages.append(m)
+
+        m = Message(x=60, y=112, h=8, w=8, scene_name="room1",
+                    flag_name=f"meat",
+                    precondition_name=None,
+                    text=f"This is a meat.\nYou eat it.\nA key is in it.")
+        messages.append(m)
+        m = Message(x=130, y=90, h=70, w=50, scene_name="room1",
+                    flag_name=f"door",
+                    precondition_name=f"meat",
+                    text=f"You unlock the door.\nWell done!")
+        messages.append(m)
+        return messages
 
     def debug_info(self):
         if not self.debug_mode:
