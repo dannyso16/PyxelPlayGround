@@ -1,4 +1,5 @@
 import pyxel
+import time
 
 
 class App:
@@ -14,6 +15,8 @@ class App:
         self.debug_mode = debug_mode
 
         self.matrix = [[False]*App.COLUMN for _ in range(App.ROW)]
+
+        self.start_time = time.time()
 
         pyxel.run(self.update, self.draw)
 
@@ -44,7 +47,8 @@ class App:
     def draw_info(self):
         margin = 8
         info = "TIME:\n"
-        info += f"{0}\n\n"
+        t = time.time() - self.start_time
+        info += f"{t:.1f}\n\n"
         info += f"COUNT:\n"
         info += f"{0}"
         pyxel.text(pyxel.width-30, margin, info, 11)
@@ -98,6 +102,7 @@ class App:
 
     def initialize(self):
         self.matrix = [[False]*App.COLUMN for _ in range(App.ROW)]
+        self.start_time = time.time()
 
     def in_matrix(self, mx, my) -> bool:
         margin = 8
