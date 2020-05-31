@@ -2,6 +2,7 @@ import pyxel
 
 
 class Message:
+
     def __init__(self, x: int, y: int, h: int, w: int,
                  scene_name: str, text: str,
                  draw_function: "function" = None,
@@ -13,7 +14,10 @@ class Message:
         self.h = h
         self.scene_name = scene_name
         self.text = text
-        self.draw_function = draw_function
+        if draw_function:
+            self.draw_function = draw_function
+        else:
+            self.draw_function = self.default_draw_function
         self.flag_name = flag_name
         self.debug_mode = debug_mode
 
@@ -25,6 +29,9 @@ class Message:
 
         if self.debug_mode:
             pyxel.rectb(self.x, self.y, self.w, self.h, 8)
+
+    def default_draw_function(self):
+        pyxel.rect(self.x, self.y, self.w, self.h, 0)
 
 
 if __name__ == "__main__":
