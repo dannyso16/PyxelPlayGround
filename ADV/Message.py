@@ -51,9 +51,8 @@ class Message:
         if self.state == State.DIALOG:
             Dialog.draw(self.text)
 
-        if self.debug_mode:
-            col = 8 if self.on_the_mouse else 0
-            pyxel.rectb(self.x, self.y, self.w, self.h, col)
+        if self.on_the_mouse:
+            pyxel.rectb(self.x, self.y, self.w, self.h, 11)
 
     def is_reachable(self, mx: int, my: int) -> bool:
         """(mx, my)がMessage object内かどうか判定
