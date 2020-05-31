@@ -7,6 +7,7 @@ class App:
     def __init__(self, debug_mode=True):
         pyxel.init(200, 200, caption="ADV")
         pyxel.mouse(visible=True)
+        pyxel.load("../asset.pyxres")
 
         self.debug_mode = debug_mode
 
@@ -34,26 +35,51 @@ class App:
 
     def get_messages(self):
         messages = []
-        m = Message(x=30, y=120, h=40, w=48, scene_name="room1",
+
+        def draw_chest():
+            pyxel.blt(x=30, y=136, img=0, u=0, v=32, w=48, h=24, colkey=7)
+
+        m = Message(x=30, y=136, h=24, w=48, scene_name="room1",
                     flag_name=f"chest",
                     precondition_name=None,
+                    draw_function=draw_chest,
                     text=f"You open the chest.\nNothing in it.")
         messages.append(m)
 
-        m = Message(x=40, y=112, h=8, w=8, scene_name="room1",
+        def draw_potion():
+            pyxel.blt(x=40, y=128, img=0, u=8, v=16, w=8, h=8, colkey=7)
+
+        m = Message(x=40, y=128, h=8, w=8, scene_name="room1",
                     flag_name=f"portion",
                     precondition_name=None,
+                    draw_function=draw_potion,
                     text=f"This is a portion.\nIt smells bad...")
         messages.append(m)
 
-        m = Message(x=60, y=112, h=8, w=8, scene_name="room1",
+        def draw_meat():
+            pyxel.blt(x=60, y=128, img=0, u=24, v=8, w=8, h=8, colkey=7)
+
+        m = Message(x=60, y=128, h=8, w=8, scene_name="room1",
                     flag_name=f"meat",
                     precondition_name=None,
+                    draw_function=draw_meat,
                     text=f"This is a meat.\nYou eat it.\nA key is in it.")
         messages.append(m)
+
+        def draw_door():
+            x, y = 130, 90
+            w, h = 50, 70
+            pyxel.rect(x, y, w, h, 12)
+            pyxel.rect(x+5, y+5, w-10, h//2-10, 13)
+            pyxel.rectb(x+5, y+5, w-10, h//2-10, 5)
+            pyxel.rect(x+5, y+h//2+5, w-10, h//2-10, 13)
+            pyxel.rectb(x+5, y+h//2+5, w-10, h//2-10, 5)
+            pyxel.circ(x + 3*w//4, y+h//2, 2, 9)
+
         m = Message(x=130, y=90, h=70, w=50, scene_name="room1",
                     flag_name=f"door",
                     precondition_name=f"meat",
+                    draw_function=draw_door,
                     text=f"You unlock the door.\nWell done!")
         messages.append(m)
         return messages
