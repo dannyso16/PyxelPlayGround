@@ -19,16 +19,28 @@ class Message:
         else:
             self.draw_function = self.default_draw_function
         self.flag_name = flag_name
+        self.on_the_mouse = False
         self.debug_mode = debug_mode
 
     def update(self):
-        pass
+        if self.is_reachable(pyxel.mouse_x, pyxel.mouse_y):
+            self.on_the_mouse = True
+        else:
+            self.on_the_mouse = False
 
     def draw(self):
         self.draw_function()
 
         if self.debug_mode:
-            pyxel.rectb(self.x, self.y, self.w, self.h, 8)
+            col = 8 if self.on_the_mouse else 0
+            pyxel.rectb(self.x, self.y, self.w, self.h, col)
+
+    def is_reachable(self, mx: int, my: int) -> bool:
+        """(mx, my)がMessage object内かどうか判定
+        """
+        b = self.x < mx < self.x + self.w
+        b &= self.y < my < self.y + self.h
+        return b
 
     def default_draw_function(self):
         pyxel.rect(self.x, self.y, self.w, self.h, 0)
@@ -36,6 +48,7 @@ class Message:
 
 if __name__ == "__main__":
     pyxel.init(200, 200)
+    pyxel.mouse(visible=True)
 
     def draw_function():
         pyxel.rect(10, 80, 50, 70, 12)
