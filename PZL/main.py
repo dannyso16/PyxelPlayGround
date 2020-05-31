@@ -20,6 +20,7 @@ class App:
     def update(self):
         if pyxel.btnp(pyxel.MOUSE_RIGHT_BUTTON):
             self.light_cell(pyxel.mouse_x, pyxel.mouse_y)
+            self.click_btn(pyxel.mouse_x, pyxel.mouse_y)
 
     def draw(self):
         pyxel.cls(1)
@@ -72,11 +73,28 @@ class App:
             if (0 <= ni < App.COLUMN) and (0 <= nj < App.ROW):
                 self.matrix[nj][ni] ^= True
 
+    def click_btn(self, mx, my):
+        if not self.in_btn(mx, my):
+            return
+        self.initialize()
+
+    def initialize(self):
+        self.matrix = [[False]*App.COLUMN for _ in range(App.ROW)]
+
     def in_matrix(self, mx, my) -> bool:
         margin = 8
         width = 32
         b = margin < mx < margin + width*App.COLUMN
         b &= margin < my < margin + width*App.ROW
+        return b
+
+    def in_btn(self, mx, my) -> bool:
+        margin = 8
+        width = 32
+        x = margin
+        y = 2 * margin + width * App.ROW
+        b = x < mx < x + width
+        b &= y < my < y + 20
         return b
 
 
