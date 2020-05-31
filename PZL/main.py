@@ -56,12 +56,28 @@ class App:
         padding = 6
         pyxel.text(x+padding, y+padding, "RESET", 11)
 
-    def light_cell(mx, my):
+    def light_cell(self, mx, my):
         if not self.in_matrix(mx, my):
             return
 
-    def in_matrix(mx, my):
-        return True
+        margin = 8
+        width = 32
+        x = mx - margin
+        y = my - margin
+        i = x // width
+        j = y // width
+        for (dx, dy) in [(0, -1), (-1, 0), (0, 0), (1, 0), (0, 1)]:
+            ni = i + dx
+            nj = j + dy
+            if (0 <= ni < App.COLUMN) and (0 <= nj < App.ROW):
+                self.matrix[nj][ni] ^= True
+
+    def in_matrix(self, mx, my) -> bool:
+        margin = 8
+        width = 32
+        b = margin < mx < margin + width*App.COLUMN
+        b &= margin < my < margin + width*App.ROW
+        return b
 
 
 if __name__ == "__main__":
