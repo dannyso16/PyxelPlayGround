@@ -11,8 +11,15 @@ class App:
         self.debug_mode = debug_mode
 
         messages = []
-        for i in range(3):
+        m = Message(x=10, y=80, h=70, w=50, scene_name="test",
+                    flag_name=f"flag{0}",
+                    precondition_name=None,
+                    text=f"text_No.{0}")
+        messages.append(m)
+        for i in range(1, 3):
             m = Message(x=10+60*i, y=80, h=70, w=50, scene_name="test",
+                        flag_name=f"flag{i}",
+                        precondition_name=f"flag{i-1}",
                         text=f"text_No.{i}")
             messages.append(m)
 
