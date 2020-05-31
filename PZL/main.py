@@ -27,6 +27,8 @@ class App:
         self.draw_matrix()
         self.draw_info()
         self.draw_reset_btn()
+        if self.is_clear():
+            self.draw_clear_text()
 
     def draw_matrix(self):
         margin = 8
@@ -56,6 +58,22 @@ class App:
         pyxel.rectb(x, y, width, 20, 11)
         padding = 6
         pyxel.text(x+padding, y+padding, "RESET", 11)
+
+    def draw_clear_text(self):
+        margin = 8
+        width = 32
+        x = margin
+        y = margin*2 + width*2
+        pyxel.rect(x, y, width*App.ROW, 20, 15)
+        pyxel.rectb(x, y, width*App.ROW, 20, 10)
+        pyxel.text(x+width*2, y+8, "CLEAR !!", 1)
+
+    def is_clear(self):
+        for j in range(App.ROW):
+            for i in range(App.COLUMN):
+                if not self.matrix[j][i]:
+                    return False
+        return True
 
     def light_cell(self, mx, my):
         if not self.in_matrix(mx, my):
