@@ -18,6 +18,12 @@ class App:
         pyxel.run(self.update, self.draw)
 
     def update(self):
+        if pyxel.btnp(pyxel.KEY_Q):
+            pyxel.quit()
+
+        if self.scene.flags["clear"]:
+            return
+
         self.scene.update()
 
         if pyxel.btnp(pyxel.MOUSE_RIGHT_BUTTON):
@@ -32,6 +38,9 @@ class App:
         pyxel.cls(15)
         h = pyxel.height/5
         pyxel.rect(0, 4*h, pyxel.width, h, 4)
+
+        pyxel.text(125, 80, "\ Escape here! /", 0)
+        pyxel.text(20, 20, "Right click to check.", 0)
 
     def get_messages(self):
         messages = []
@@ -77,10 +86,10 @@ class App:
             pyxel.circ(x + 3*w//4, y+h//2, 2, 9)
 
         m = Message(x=130, y=90, h=70, w=50, scene_name="room1",
-                    flag_name=f"door",
+                    flag_name=f"clear",
                     precondition_name=f"meat",
                     draw_function=draw_door,
-                    text=f"You unlock the door.\nWell done!")
+                    text=f"You unlock the door.\nWell done!\n\"Q\" to quit.")
         messages.append(m)
         return messages
 
