@@ -17,6 +17,7 @@ class App:
         self.matrix = [[False]*App.COLUMN for _ in range(App.ROW)]
 
         self.start_time = time.time()
+        self.count = 0
 
         pyxel.run(self.update, self.draw)
 
@@ -50,7 +51,7 @@ class App:
         t = time.time() - self.start_time
         info += f"{t:.1f}\n\n"
         info += f"COUNT:\n"
-        info += f"{0}"
+        info += f"{self.count}"
         pyxel.text(pyxel.width-30, margin, info, 11)
 
     def draw_reset_btn(self):
@@ -94,6 +95,7 @@ class App:
             nj = j + dy
             if (0 <= ni < App.COLUMN) and (0 <= nj < App.ROW):
                 self.matrix[nj][ni] ^= True
+        self.count += 1
 
     def click_btn(self, mx, my):
         if not self.in_btn(mx, my):
@@ -103,6 +105,7 @@ class App:
     def initialize(self):
         self.matrix = [[False]*App.COLUMN for _ in range(App.ROW)]
         self.start_time = time.time()
+        self.count = 0
 
     def in_matrix(self, mx, my) -> bool:
         margin = 8
