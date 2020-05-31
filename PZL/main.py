@@ -29,8 +29,10 @@ class App:
     def draw(self):
         pyxel.cls(1)
         self.draw_matrix()
+        self.high_light_cell(pyxel.mouse_x, pyxel.mouse_y)
         self.draw_info()
         self.draw_reset_btn()
+        self.high_light_btn(pyxel.mouse_x, pyxel.mouse_y)
         if self.is_clear():
             self.draw_clear_text()
 
@@ -44,6 +46,26 @@ class App:
                 y = margin + j*width
                 pyxel.rect(x, y, width, width, col)
                 pyxel.rectb(x, y, width, width, 1)
+
+    def high_light_cell(self, mx, my):
+        if not self.in_matrix(mx, my):
+            return
+        margin = 8
+        width = 32
+        i = (mx - margin) // width
+        j = (my - margin) // width
+        x = margin + i*width
+        y = margin + j*width
+        pyxel.rectb(x, y, width, width, 10)
+
+    def high_light_btn(self, mx, my):
+        if not self.in_btn(mx, my):
+            return
+        margin = 8
+        width = 32
+        x = margin
+        y = 2 * margin + width * App.ROW
+        pyxel.rectb(x, y, width, 20, 9)
 
     def draw_info(self):
         margin = 8
