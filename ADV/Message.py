@@ -1,4 +1,11 @@
 import pyxel
+from enum import Enum, auto
+from Dialog import Dialog
+
+
+class State(Enum):
+    SEARCH = auto()
+    DIALOG = auto()
 
 
 class Message:
@@ -21,15 +28,19 @@ class Message:
         self.flag_name = flag_name
         self.on_the_mouse = False
         self.debug_mode = debug_mode
+        self.state = State.SEARCH
 
     def update(self):
-        if self.is_reachable(pyxel.mouse_x, pyxel.mouse_y):
-            self.on_the_mouse = True
-        else:
-            self.on_the_mouse = False
+        if self.state == State.SEARCH:
+            if self.is_reachable(pyxel.mouse_x, pyxel.mouse_y):
+                self.on_the_mouse = True
+            else:
+                self.on_the_mouse = False
 
     def draw(self):
         self.draw_function()
+        if self.state == State.DIALOG:
+            Dialog.draw(self.text)
 
         if self.debug_mode:
             col = 8 if self.on_the_mouse else 0
@@ -41,6 +52,14 @@ class Message:
         b = self.x < mx < self.x + self.w
         b &= self.y < my < self.y + self.h
         return b
+
+    def toggle_state(self):
+        """stateを切り替える
+        """
+        if self.state == State.SEARCH:
+            self.state = State.DIALOG
+        elif self.state == State.DIALOG:
+            self.state = State.SEARCH
 
     def default_draw_function(self):
         pyxel.rect(self.x, self.y, self.w, self.h, 0)
@@ -60,5 +79,5 @@ if __name__ == "__main__":
 
     message = Message(x=10, y=80, h=70, w=50, scene_name="hoge",
                       text="this is a pen", draw_function=draw_function)
-
+    message.set_state_dialog()
     pyxel.run(message.update, message.draw)
